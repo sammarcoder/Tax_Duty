@@ -1162,7 +1162,7 @@ export default function TaxInfoTable() {
                       name={field.name}
                       value={editFormData[field.name]}
                       onChange={handleEditChange}
-                      className="w-full p-2 border border-[#4a6fa5] rounded-md outline-none focus:ring-2 focus:ring-[#4a6fa5]"
+                      className="w-full p-2 border border-[#4a6fa5] text-right rounded-md outline-none focus:ring-2 focus:ring-[#4a6fa5]"
                     />
                   </div>
                 ))}

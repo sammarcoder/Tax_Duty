@@ -186,7 +186,7 @@
 //                 onChange={() => handleDutyTypeChange('custom')}
 //                 className="mr-2"
 //               />
-//               <label htmlFor="customDuty" className="text-sm text-gray-700 mr-2">Custom Duty (%)</label>
+//               <label htmlFor="customDuty" className="text-sm text-gray-700 mr-2">Custom Duty </label>
 //               <input
 //                 type="number"
 //                 step="0.01"
@@ -1364,6 +1364,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { use, useState } from 'react';
 
 const ItemDetails = ({
@@ -1388,8 +1407,8 @@ const ItemDetails = ({
   // const AvPkr = exchangeRate * itemDetails.totalAssessableValue * landedCost;
   // const DvPkr = exchangeRate * itemDetails.totalDeclaredValue * landedCost;
 
-  const totalAvPkr = exchangeRate * itemDetails.totalAssessableValue * landedCost;
-  const totalDvPkr = exchangeRate * itemDetails.declaredValue * landedCost;
+  const totalAvPkr = exchangeRate * itemDetails.totalAssessableValue * (landedCost || 1.01);
+  const totalDvPkr = exchangeRate * itemDetails.totalDeclaredValue * (landedCost || 1.01);
 
   // Determine which duty to use based on selection
   const selectedAvDuty = itemDetails.isCustomDutySelected ?
@@ -1448,17 +1467,17 @@ const ItemDetails = ({
     (itemDetails.isCustomDutySelected ? Av_customDuty : Av_ftaCustomDuty) +
     Av_rd + Av_salesTax + Av_incomeTaxImport;
 
-// console.log(itemDetails.isCustomDutySelected ? Av_customDuty : Av_ftaCustomDuty)
-// console.log(Av_acd)
-// console.log(Av_rd)
-// console.log(Av_rd)
-// console.log(Av_salesTax)
-// console.log(Av_additionalSalesTax)
+  // console.log(itemDetails.isCustomDutySelected ? Av_customDuty : Av_ftaCustomDuty)
+  // console.log(Av_acd)
+  // console.log(Av_rd)
+  // console.log(Av_rd)
+  // console.log(Av_salesTax)
+  // console.log(Av_additionalSalesTax)
 
 
   const Dv_total = Dv_acd + Dv_additionalSalesTax +
     (itemDetails.isCustomDutySelected ? Dv_customDuty : Dv_ftaCustomDuty) +
-    Dv_rd + Dv_salesTax + Dv_incomeTaxImport; 
+    Dv_rd + Dv_salesTax + Dv_incomeTaxImport;
   // Update Grand Totals to include all taxes
   const Av_GrandTotal = Av_total + Av_furtherTax + Av_incomeTaxWithheld
   const Dv_GrandTotal = Dv_total + Dv_furtherTax + Dv_incomeTaxWithheld
@@ -1521,8 +1540,8 @@ const ItemDetails = ({
               step="0.01"
               min="0"
               value={safeValue(itemDetails.assessableQuantity)}
-              onChange={(e) => onItemDetailChange('assessableQuantity', parseFloat(e.target.value) || 0)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) => onItemDetailChange('assessableQuantity', parseFloat(e.target.value))}
+              className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
@@ -1535,8 +1554,8 @@ const ItemDetails = ({
               step="0.01"
               min="0"
               value={safeValue(itemDetails.assessableValue)}
-              onChange={(e) => onItemDetailChange('assessableValue', parseFloat(e.target.value) || 0)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) => onItemDetailChange('assessableValue', parseFloat(e.target.value))}
+              className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
@@ -1550,7 +1569,7 @@ const ItemDetails = ({
               min="0"
               value={safeValue(itemDetails.totalAssessableValue)}
               disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+              className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
             />
           </div>
 
@@ -1562,7 +1581,7 @@ const ItemDetails = ({
               type="number"
               value={totalAvPkr.toFixed(2)}
               disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+              className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
             />
           </div>
         </div>
@@ -1577,9 +1596,9 @@ const ItemDetails = ({
               type="number"
               step="0.01"
               min="0"
-              value={safeValue(itemDetails.declaredQuantity || itemDetails.dutyQuantity)}
-              onChange={(e) => onItemDetailChange('declaredQuantity', parseFloat(e.target.value) || 0)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              value={safeValue(itemDetails.declaredQuantity)}
+              onChange={(e) => onItemDetailChange('declaredQuantity', parseFloat(e.target.value))}
+              className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
@@ -1591,9 +1610,9 @@ const ItemDetails = ({
               type="number"
               step="0.01"
               min="0"
-              value={safeValue(itemDetails.declaredValue || itemDetails.dutyValue)}
-              onChange={(e) => onItemDetailChange('declaredValue', parseFloat(e.target.value) || 0)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              value={safeValue(itemDetails.declaredValue)}
+              onChange={(e) => onItemDetailChange('declaredValue', parseFloat(e.target.value))}
+              className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
@@ -1607,7 +1626,7 @@ const ItemDetails = ({
               min="0"
               value={safeValue(itemDetails.totalDeclaredValue || itemDetails.totalDutyValue)}
               disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+              className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
             />
           </div>
           <div>
@@ -1620,7 +1639,7 @@ const ItemDetails = ({
               min="0"
               value={totalDvPkr.toFixed(2)}
               disabled
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+              className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
             />
           </div>
         </div>
@@ -1651,19 +1670,22 @@ const ItemDetails = ({
                   }`}
                 onClick={() => handleDutyTypeChange('custom')}
               >
-                Custom Duty (%)
+                Custom Duty 
               </label>
-              <input
-                type="number"
-                step="0.01"
-                value={safeValue(itemDetails.customDuty)}
-                onChange={(e) => onItemDetailChange('customDuty', parseFloat(e.target.value) || 0)}
-                className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${itemDetails.isCustomDutySelected
+              <div className='flex items-center'>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={safeValue(itemDetails.customDuty)}
+                  onChange={(e) => onItemDetailChange('customDuty', parseFloat(e.target.value))}
+                  className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${itemDetails.isCustomDutySelected
                     ? "border-[#4a6fa5] focus:ring-[#4a6fa5] focus:border-[#4a6fa5]"
                     : "border-gray-300 bg-gray-50 text-gray-500"
-                  }`}
-                disabled={!itemDetails.isCustomDutySelected}
-              />
+                    }`}
+                  disabled={!itemDetails.isCustomDutySelected}
+                /><span className='ml-2'>%</span>
+              </div>
+
             </div>
             <div>
               <input
@@ -1703,19 +1725,22 @@ const ItemDetails = ({
                   }`}
                 onClick={() => handleDutyTypeChange('fta')}
               >
-                FTA Custom Duty (%)
+                FTA Custom Duty 
               </label>
-              <input
-                type="number"
-                step="0.01"
-                value={safeValue(itemDetails.ftaCustomDuty)}
-                onChange={(e) => onItemDetailChange('ftaCustomDuty', parseFloat(e.target.value) || 0)}
-                className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${itemDetails.isFtaCustomDutySelected
+              <div className='flex items-center'>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={safeValue(itemDetails.ftaCustomDuty)}
+                  onChange={(e) => onItemDetailChange('ftaCustomDuty', parseFloat(e.target.value))}
+                  className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${itemDetails.isFtaCustomDutySelected
                     ? "border-[#4a6fa5] focus:ring-[#4a6fa5] focus:border-[#4a6fa5]"
                     : "border-gray-300 bg-gray-50 text-gray-500"
-                  }`}
-                disabled={!itemDetails.isFtaCustomDutySelected}
-              />
+                    }`}
+                  disabled={!itemDetails.isFtaCustomDutySelected}
+                />
+                <span className=' ml-2'>%</span>
+              </div>
             </div>
             <div>
               <input
@@ -1740,14 +1765,18 @@ const ItemDetails = ({
           {/* ACD Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">ACD (%)</span>
-              <input
-                type="number"
-                step="0.01"
-                value={safeValue(itemDetails.acd)}
-                onChange={(e) => onItemDetailChange('acd', parseFloat(e.target.value) || 0)}
-                className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
-              />
+              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">ACD </span>
+              <div  className='flex items-center'>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={safeValue(itemDetails.acd)}
+                  onChange={(e) => onItemDetailChange('acd', parseFloat(e.target.value))}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
+                />
+                <span className='ml-2'>%</span>
+              </div>
+
             </div>
             <div>
               <input
@@ -1772,14 +1801,18 @@ const ItemDetails = ({
           {/* RD Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">RD (%)</span>
-              <input
-                type="number"
-                step="0.01"
-                value={itemDetails.rd}
-                onChange={(e) => onItemDetailChange('rd', parseFloat(e.target.value) || 0)}
-                className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
-              />
+              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">RD </span>
+              <div  className='flex items-center'>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={itemDetails.rd}
+                  onChange={(e) => onItemDetailChange('rd', parseFloat(e.target.value))}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
+                />
+                <span className='ml-2'>%</span>
+              </div>
+
             </div>
             <div>
               <input
@@ -1804,14 +1837,19 @@ const ItemDetails = ({
           {/* Sales Tax Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Sales Tax (%)</span>
-              <input
-                type="number"
-                step="0.01"
-                value={safeValue(itemDetails.salesTax)}
-                onChange={(e) => onItemDetailChange('salesTax', parseFloat(e.target.value) || 0)}
-                className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
-              />
+              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Sales Tax </span>
+              <div className='flex items-center'>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={safeValue(itemDetails.salesTax)}
+                  onChange={(e) => onItemDetailChange('salesTax', parseFloat(e.target.value))}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
+                />
+                <span className='ml-2'>%</span>
+
+              </div>
+
             </div>
             <div>
               <input
@@ -1836,14 +1874,18 @@ const ItemDetails = ({
           {/* Additional Sales Tax Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Additional Sales Tax (%)</span>
-              <input
-                type="number"
-                step="0.01"
-                value={safeValue(itemDetails.additionalSalesTax)}
-                onChange={(e) => onItemDetailChange('additionalSalesTax', parseFloat(e.target.value) || 0)}
-                className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
-              />
+              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Additional Sales Tax </span>
+              <div className='flex items-center'>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={safeValue(itemDetails.additionalSalesTax)}
+                  onChange={(e) => onItemDetailChange('additionalSalesTax', parseFloat(e.target.value))}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
+                />
+                <span className='ml-2'>%</span>
+              </div>
+
             </div>
             <div>
               <input
@@ -1868,14 +1910,20 @@ const ItemDetails = ({
           {/* Income Tax Import Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Income Tax Import (%)</span>
-              <input
-                type="number"
-                step="0.01"
-                value={safeValue(itemDetails.incomeTaxImport)}
-                onChange={(e) => onItemDetailChange('incomeTaxImport', parseFloat(e.target.value) || 0)}
-                className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
-              />
+              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Income Tax Import </span>
+              <div className='flex items-center'>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={safeValue(itemDetails.incomeTaxImport)}
+                  onChange={(e) => onItemDetailChange('incomeTaxImport', parseFloat(e.target.value))}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
+                />
+                <span className='ml-2'>
+                  %
+                </span>
+              </div>
+
             </div>
             <div>
               <input
@@ -1900,8 +1948,8 @@ const ItemDetails = ({
 
           {/* Total Duty and Tax Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center bg-blue-50 p-2 rounded">
-            <div className="text-sm font-bold text-gray-700">Total Duty and Tax (%)</div>
-            <div>
+            <div className="text-sm font-bold text-gray-700">Total Duty and Tax </div>
+            <div className='flex items-center'>
               <input
                 type="number"
                 step="0.01"
@@ -1926,14 +1974,18 @@ const ItemDetails = ({
           {/* Further Tax Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Further Tax (%)</span>
-              <input
-                type="number"
-                step="0.01"
-                value={safeValue(itemDetails.furtherTax)}
-                onChange={(e) => onItemDetailChange('furtherTax', parseFloat(e.target.value) || 0)}
-                className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
-              />
+              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Further Tax </span>
+              <div className='flex items-center'>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={safeValue(itemDetails.furtherTax)}
+                  onChange={(e) => onItemDetailChange('furtherTax', parseFloat(e.target.value))}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
+                />
+                <span className='ml-2'>%</span>
+              </div>
+
             </div>
             <div>
               <input
@@ -1958,14 +2010,20 @@ const ItemDetails = ({
           {/* Income Tax Withheld Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Income Tax Withheld (%)</span>
-              <input
+              <span className="text-sm text-gray-700 w-[105px] ml-6">Income Tax Withheld </span>
+              <div>
+                <input
                 type="number"
                 step="0.01"
                 value={safeValue(itemDetails.incomeTaxWithheld)}
-                onChange={(e) => onItemDetailChange('incomeTaxWithheld', parseFloat(e.target.value) || 0)}
+                onChange={(e) => onItemDetailChange('incomeTaxWithheld', parseFloat(e.target.value))}
                 className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:b9rd focus:border-2er-blue-500"
               />
+                <span className='ml-2'>
+                  %
+                </span>
+              </div>
+              
             </div>
             <div>
               <input

@@ -423,7 +423,7 @@ const HeaderSection = ({ headerData, onHeaderChange, readOnly }) => {
           }`}
         />
       </div>
-      <div>
+      {/* <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Value Addition Rate (%)</label>
         <input
           type="number"
@@ -437,7 +437,7 @@ const HeaderSection = ({ headerData, onHeaderChange, readOnly }) => {
             readOnly ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-white'
           }`}
         />
-      </div>
+      </div> */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
         <input
@@ -455,7 +455,7 @@ const HeaderSection = ({ headerData, onHeaderChange, readOnly }) => {
         <label className="block text-sm font-medium text-gray-700 mb-1">landedCost</label>
         <input
           type="text"
-          value={headerData.landedCost || ''}
+          value={headerData.landedCost || 1.01}
           onChange={(e) => handleInputChange('landedCost', e.target.value)}
           disabled={readOnly}
           placeholder={readOnly ? 'No currency' : 'Enter currency (e.g., USD)'}

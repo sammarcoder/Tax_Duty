@@ -93,7 +93,7 @@ const FileHeader = sequelize.define('FileHeader', {
     unique: true
   },
   landedCost:{
-    type: DataTypes.DECIMAL(),
+    type: DataTypes.DECIMAL(10,4),
     allowNull: false
   },
   exchangeRate: {

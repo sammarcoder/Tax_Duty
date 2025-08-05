@@ -534,6 +534,34 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // src/assets/FileHeader/FileHeaderForm.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -566,6 +594,7 @@ const FileHeaderForm = ({ readOnly = false }) => {
   const [headerData, setHeaderData] = useState({
     fileName: '',
     fileNumber: '',
+    landedCost :1.01,
     exchangeRate: '',
     valueAdditionRate: 1.1,
     currency: ''
@@ -618,7 +647,7 @@ const FileHeaderForm = ({ readOnly = false }) => {
             fileName: fileData.fileName || '', 
             fileNumber: fileData.fileNumber || '',
             exchangeRate: fileData.exchangeRate || 280.50,
-            landedCost : fileData.landedCost,
+            landedCost : fileData.landedCost || 1.01,
             valueAdditionRate: fileData.valueAdditionRate || 1.1,
             currency: fileData.currency || 'USD'
           });
@@ -710,53 +739,107 @@ const FileHeaderForm = ({ readOnly = false }) => {
 
 
 
+// const handleItemSelect = (item) => {
+//   setSelectedItem(item);
+
+//   // Initialize current item details with tax info values
+//   const assessableValue = parseFloat(item.assessableValue) || 0;
+//   const customDuty = parseFloat(item.customDuty) || 0;
+//   const acd = parseFloat(item.acd) || 0;
+//   const rd = parseFloat(item.rd) || 0;
+//   const ftaCustomDuty = parseFloat(item.ftaCustomDuty) || 0;
+//   const salesTax = parseFloat(item.salesTax) || 0;
+//   const additionalSalesTax = parseFloat(item.additionalSalesTax) || 0;
+//   const furtherTax = parseFloat(item.furtherTax) || 0;
+//   const incomeTaxImport = parseFloat(item.incomeTaxImport) || 0;
+//   const incomeTaxWithheld = parseFloat(item.incomeTaxWithheld) || 0;
+
+//   // Set a default value for declared value instead of calculating it
+//   const declaredValue = 0; // Or any default value you prefer
+
+//   setCurrentItemDetails({
+//     taxInfoId: item.id,
+//     itemName: item.itemName,
+//     hsCode: item.hsCode,
+//     uomCode: item.uomCode,
+//     assessableQuantity: 1,
+//     assessableValue,
+//     totalAssessableValue: assessableValue,
+//     declaredQuantity: 1,
+//     declaredValue,
+//     totalDeclaredValue: declaredValue,
+//     total: assessableValue + declaredValue,
+//     isCustomDutySelected: false,
+//     isFtaCustomDutySelected: true,
+//     customDuty,
+//     acd,
+//     rd,
+//     ftaCustomDuty,
+//     salesTax,
+//     additionalSalesTax,
+//     furtherTax,
+//     incomeTaxImport,
+//     incomeTaxWithheld,
+//     remarks: ''
+//   });
+  
+//   // Close the popup when an item is selected
+//   setShowItemSelector(false);
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const handleItemSelect = (item) => {
   setSelectedItem(item);
 
-  // Initialize current item details with tax info values
-  const assessableValue = parseFloat(item.assessableValue) || 0;
-  const customDuty = parseFloat(item.customDuty) || 0;
-  const acd = parseFloat(item.acd) || 0;
-  const rd = parseFloat(item.rd) || 0;
-  const ftaCustomDuty = parseFloat(item.ftaCustomDuty) || 0;
-  const salesTax = parseFloat(item.salesTax) || 0;
-  const additionalSalesTax = parseFloat(item.additionalSalesTax) || 0;
-  const furtherTax = parseFloat(item.furtherTax) || 0;
-  const incomeTaxImport = parseFloat(item.incomeTaxImport) || 0;
-  const incomeTaxWithheld = parseFloat(item.incomeTaxWithheld) || 0;
-
-  // Set a default value for declared value instead of calculating it
-  const declaredValue = 0; // Or any default value you prefer
-
+  // Initialize with FTA selected by default (matching model defaults)
   setCurrentItemDetails({
     taxInfoId: item.id,
     itemName: item.itemName,
     hsCode: item.hsCode,
     uomCode: item.uomCode,
     assessableQuantity: 1,
-    assessableValue,
-    totalAssessableValue: assessableValue,
+    assessableValue: parseFloat(item.assessableValue) || 0,
+    totalAssessableValue: parseFloat(item.assessableValue) || 0,
     declaredQuantity: 1,
-    declaredValue,
-    totalDeclaredValue: declaredValue,
-    total: assessableValue + declaredValue,
-    isCustomDutySelected: true,
-    isFtaCustomDutySelected: false,
-    customDuty,
-    acd,
-    rd,
-    ftaCustomDuty,
-    salesTax,
-    additionalSalesTax,
-    furtherTax,
-    incomeTaxImport,
-    incomeTaxWithheld,
+    declaredValue: 0,
+    totalDeclaredValue: 0,
+    total: parseFloat(item.assessableValue) || 0,
+    isCustomDutySelected: false,         // Default to false (matching model)
+    isFtaCustomDutySelected: true,       // Default to true (matching model)
+    customDuty: parseFloat(item.customDuty) || 0,
+    acd: parseFloat(item.acd) || 0,
+    rd: parseFloat(item.rd) || 0,
+    ftaCustomDuty: parseFloat(item.ftaCustomDuty) || 0,
+    salesTax: parseFloat(item.salesTax) || 0,
+    additionalSalesTax: parseFloat(item.additionalSalesTax) || 0,
+    furtherTax: parseFloat(item.furtherTax) || 0,
+    incomeTaxImport: parseFloat(item.incomeTaxImport) || 0,
+    incomeTaxWithheld: parseFloat(item.incomeTaxWithheld) || 0,
     remarks: ''
   });
   
   // Close the popup when an item is selected
   setShowItemSelector(false);
 };
+
+
 
 
 
@@ -898,15 +981,45 @@ const handleItemDetailChange = (field, value) => {
     }
   };
 
+  // const handleEditItem = (item) => {
+  //   setEditingItemId(item.id);
+  //   setCurrentItemDetails({
+  //     ...item,
+  //     taxInfoId: item.taxInfoId || item.TaxInfo?.id
+  //   });
+  //   // Close popup when editing an item
+  //   setShowItemSelector(false);
+  // };
+
+
+
   const handleEditItem = (item) => {
-    setEditingItemId(item.id);
-    setCurrentItemDetails({
-      ...item,
-      taxInfoId: item.taxInfoId || item.TaxInfo?.id
-    });
-    // Close popup when editing an item
-    setShowItemSelector(false);
-  };
+  setEditingItemId(item.id);
+  
+  // ✅ NEW: Normalize duty selection flags to ensure mutual exclusivity
+  const isCustomSelected = Boolean(item.isCustomDutySelected);
+  const isFtaSelected = Boolean(item.isFtaCustomDutySelected);
+  
+  // If both are true or both are false, set defaults (FTA true, Custom false)
+  let normalizedIsCustom = isCustomSelected;
+  let normalizedIsFta = isFtaSelected;
+  
+  if (isCustomSelected === isFtaSelected) {
+    normalizedIsCustom = false;
+    normalizedIsFta = true;
+  }
+  
+  setCurrentItemDetails({
+    ...item,
+    taxInfoId: item.taxInfoId || item.TaxInfo?.id,
+    isCustomDutySelected: normalizedIsCustom,
+    isFtaCustomDutySelected: normalizedIsFta
+  });
+  
+  // Close popup when editing an item
+  setShowItemSelector(false);
+};
+
 
   const handleUpdateItem = async () => {
     if (!currentItemDetails || !editingItemId) return;
@@ -1007,7 +1120,7 @@ const handleItemDetailChange = (field, value) => {
           fileName: '',
           fileNumber: '',
           exchangeRate: 280.50,
-          landedCost: null,
+          landedCost: 1.01,
           valueAdditionRate: 1.1,
           currency: 'USD'
         });
