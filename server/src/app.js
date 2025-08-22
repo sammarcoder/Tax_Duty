@@ -52,7 +52,7 @@ app.use((req, res) => res.status(404).json({ message: 'Not Found' }));
 sequelize.authenticate()
   .then(() => {
     console.log('✅ Database connected');
-    return sequelize.sync({});
+    return sequelize.sync({alter:true});
   })
   .then(() => {
     console.log('✅ Models synced');
