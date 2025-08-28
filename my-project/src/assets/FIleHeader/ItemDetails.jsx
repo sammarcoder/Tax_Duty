@@ -829,9 +829,780 @@
 
 
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 
-let avv = {}
+// let avv = {}
+
+// const ItemDetails = ({
+//   landedCost,
+//   exchangeRate,
+//   itemDetails,
+//   onItemDetailChange,
+//   onAddItem,
+//   onCancelEdit,
+//   isEditing,
+//   saving
+// }) => {
+
+//   // Format number with commas
+//   const formatNumber = (value, decimals = 2) => {
+//     const num = typeof value === 'number' ? value : parseFloat(value) || 0;
+//     return num.toLocaleString('en-US', {
+//       minimumFractionDigits: decimals,
+//       maximumFractionDigits: decimals
+//     });
+//   };
+
+//   // Safe value function
+//   const safeValue = (value) => {
+//     if (value === null || value === undefined) return 0;
+//     if (typeof value === 'number') return value;
+//     if (typeof value === 'string') {
+//       const parsed = parseFloat(value);
+//       return isNaN(parsed) ? 0 : parsed;
+//     }
+//     return 0;
+//   };
+
+//   // Handle number input focus (remove formatting for editing)
+//   const handleNumberFocus = (e) => {
+//     const value = e.target.value.replace(/,/g, '');
+//     e.target.value = value;
+//   };
+
+//   // Handle number input blur (add formatting after editing)
+//   const handleNumberBlur = (e, fieldName) => {
+//     const value = parseFloat(e.target.value.replace(/,/g, '')) || 0;
+//     onItemDetailChange(fieldName, value);
+//   };
+
+//   const [sales_tax, setSales_tex] = useState(null);
+
+//   // Calculate base values
+//   const totalAvPkr = exchangeRate * safeValue(itemDetails.totalAssessableValue) * (landedCost || 1.01);
+//   const totalDvPkr = exchangeRate * safeValue(itemDetails.totalDeclaredValue) * (landedCost || 1.01);
+
+//   // Determine which duty to use based on selection
+//   const selectedAvDuty = itemDetails.isCustomDutySelected ?
+//     (totalAvPkr * safeValue(itemDetails.customDuty)) / 100 :
+//     (totalAvPkr * safeValue(itemDetails.ftaCustomDuty)) / 100;
+
+//   const selectedDvDuty = itemDetails.isCustomDutySelected ?
+//     (totalDvPkr * safeValue(itemDetails.customDuty)) / 100 :
+//     (totalDvPkr * safeValue(itemDetails.ftaCustomDuty)) / 100;
+
+//   // Calculate individual components with the selected duty
+//   const Av_customDuty = itemDetails.isCustomDutySelected ? (totalAvPkr * safeValue(itemDetails.customDuty)) / 100 : 0;
+//   const Av_ftaCustomDuty = itemDetails.isFtaCustomDutySelected ? (totalAvPkr * safeValue(itemDetails.ftaCustomDuty)) / 100 : 0;
+//   const Av_acd = (totalAvPkr * safeValue(itemDetails.acd)) / 100;
+//   const Av_rd = (totalAvPkr * safeValue(itemDetails.rd)) / 100;
+
+//   // Use the selected duty in subsequent calculations
+//   const Av_salesTax = ((totalAvPkr + selectedAvDuty + Av_acd + Av_rd) * safeValue(itemDetails.salesTax)) / 100;
+//   const Av_additionalSalesTax = ((totalAvPkr + selectedAvDuty + Av_acd + Av_rd) * safeValue(itemDetails.additionalSalesTax)) / 100;
+//   const Av_incomeTaxImport = ((totalAvPkr + selectedAvDuty + Av_acd + Av_rd + Av_salesTax + Av_additionalSalesTax) * safeValue(itemDetails.incomeTaxImport)) / 100;
+
+//   // Calculate DV components
+//   const Dv_customDuty = itemDetails.isCustomDutySelected ? (totalDvPkr * safeValue(itemDetails.customDuty)) / 100 : 0;
+//   const Dv_ftaCustomDuty = itemDetails.isFtaCustomDutySelected ? (totalDvPkr * safeValue(itemDetails.ftaCustomDuty)) / 100 : 0;
+//   const Dv_acd = (totalDvPkr * safeValue(itemDetails.acd)) / 100;
+//   const Dv_rd = (totalDvPkr * safeValue(itemDetails.rd)) / 100;
+//   const Dv_salesTax = ((totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd) * safeValue(itemDetails.salesTax)) / 100;
+//   const Dv_additionalSalesTax = ((totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd) * safeValue(itemDetails.additionalSalesTax)) / 100;
+//   const Dv_incomeTaxImport = ((totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd + Dv_salesTax + Dv_additionalSalesTax) * safeValue(itemDetails.incomeTaxImport)) / 100;
+
+//   // Add new calculations for Further Tax as requested
+//   const astSalesTaxRatio = safeValue(itemDetails.salesTax) > 0 ?
+//     (1 + (safeValue(itemDetails.additionalSalesTax) / safeValue(itemDetails.salesTax))) : 1;
+
+//   const Av_furtherTax = astSalesTaxRatio *
+//     (totalAvPkr + selectedAvDuty + Av_acd + Av_rd) *
+//     (safeValue(itemDetails.furtherTax) / 100);
+
+//   const Dv_furtherTax = astSalesTaxRatio *
+//     (totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd) *
+//     (safeValue(itemDetails.furtherTax) / 100);
+
+//   // Add new calculations for Income Tax Withheld as requested
+//   const Av_incomeTaxWithheld = astSalesTaxRatio *
+//     (totalAvPkr + selectedAvDuty + Av_acd + Av_rd + Av_salesTax + Av_additionalSalesTax) *
+//     (safeValue(itemDetails.incomeTaxWithheld) / 100);
+
+//   const Dv_incomeTaxWithheld = astSalesTaxRatio *
+//     (totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd + Dv_salesTax + Dv_additionalSalesTax) *
+//     (safeValue(itemDetails.incomeTaxWithheld) / 100);
+
+//   // Total Duty and Tax
+//   const Av_total = Av_acd + Av_additionalSalesTax +
+//     (itemDetails.isCustomDutySelected ? Av_customDuty : Av_ftaCustomDuty) +
+//     Av_rd + Av_salesTax + Av_incomeTaxImport;
+
+//   const Dv_total = Dv_acd + Dv_additionalSalesTax +
+//     (itemDetails.isCustomDutySelected ? Dv_customDuty : Dv_ftaCustomDuty) +
+//     Dv_rd + Dv_salesTax + Dv_incomeTaxImport;
+
+//   // Update Grand Totals to include all taxes
+//   const Av_GrandTotal = Av_total + Av_furtherTax + Av_incomeTaxWithheld;
+//   const Dv_GrandTotal = Dv_total + Dv_furtherTax + Dv_incomeTaxWithheld;
+
+//   // Handle duty type selection
+//   const handleDutyTypeChange = (type) => {
+//     if (type === 'custom') {
+//       console.log('User selected Custom Duty with value:', itemDetails.customDuty + '%');
+//       onItemDetailChange('isCustomDutySelected', true);
+//       onItemDetailChange('isFtaCustomDutySelected', false);
+//     } else {
+//       console.log('User selected FTA Custom Duty with value:', itemDetails.ftaCustomDuty + '%');
+//       onItemDetailChange('isCustomDutySelected', false);
+//       onItemDetailChange('isFtaCustomDutySelected', true);
+//     }
+//   };
+
+//   return (
+//     <div className="bg-gray-50 p-4 rounded-md mb-6">
+//       <h3 className="text-lg font-medium mb-4 text-[#4a6fa5]">
+//         {isEditing ? `Edit Item: ${itemDetails.itemName}` : `Selected Item: ${itemDetails.itemName}`}
+//       </h3>
+
+//       <div className="space-y-4">
+//         {/* HS Code and UOM in one row */}
+//         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               HS Code
+//             </label>
+//             <input
+//               type="text"
+//               value={itemDetails.hsCode || ''}
+//               disabled
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Unit of Measurement
+//             </label>
+//             <input
+//               type="text"
+//               value={itemDetails.Unit?.unit || itemDetails.uomCode || ''}
+//               disabled
+//               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Assessable values in one row */}
+//         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Assessable Quantity
+//             </label>
+//             <input
+//               type="text"
+//               value={formatNumber(safeValue(itemDetails.assessableQuantity))}
+//               onFocus={handleNumberFocus}
+//               onBlur={(e) => handleNumberBlur(e, 'assessableQuantity')}
+//               onChange={(e) => {
+//                 const value = e.target.value.replace(/,/g, '');
+//                 if (!isNaN(value) || value === '' || value === '-') {
+//                   onItemDetailChange('assessableQuantity', parseFloat(value) || 0);
+//                 }
+//               }}
+//               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Assessable Value
+//             </label>
+//             <input
+//               type="text"
+//               value={formatNumber(safeValue(itemDetails.assessableValue))}
+//               onFocus={handleNumberFocus}
+//               onBlur={(e) => handleNumberBlur(e, 'assessableValue')}
+//               onChange={(e) => {
+//                 const value = e.target.value.replace(/,/g, '');
+//                 if (!isNaN(value) || value === '' || value === '-') {
+//                   onItemDetailChange('assessableValue', parseFloat(value) || 0);
+//                 }
+//               }}
+//               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Total Assessable Value
+//             </label>
+//             <input
+//               type="text"
+//               value={formatNumber(safeValue(itemDetails.totalAssessableValue))}
+//               disabled
+//               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Total Assessable Value PKR
+//             </label>
+//             <input
+//               type="text"
+//               value={formatNumber(totalAvPkr)}
+//               disabled
+//               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Declared values in one row */}
+//         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Declared Quantity
+//             </label>
+//             <input
+//               type="text"
+//               value={formatNumber(safeValue(itemDetails.declaredQuantity))}
+//               onFocus={handleNumberFocus}
+//               onBlur={(e) => handleNumberBlur(e, 'declaredQuantity')}
+//               onChange={(e) => {
+//                 const value = e.target.value.replace(/,/g, '');
+//                 if (!isNaN(value) || value === '' || value === '-') {
+//                   onItemDetailChange('declaredQuantity', parseFloat(value) || 0);
+//                 }
+//               }}
+//               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Declared Value
+//             </label>
+//             <input
+//               type="text"
+//               value={formatNumber(safeValue(itemDetails.declaredValue))}
+//               onFocus={handleNumberFocus}
+//               onBlur={(e) => handleNumberBlur(e, 'declaredValue')}
+//               onChange={(e) => {
+//                 const value = e.target.value.replace(/,/g, '');
+//                 if (!isNaN(value) || value === '' || value === '-') {
+//                   onItemDetailChange('declaredValue', parseFloat(value) || 0);
+//                 }
+//               }}
+//               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Total Declared Value
+//             </label>
+//             <input
+//               type="text"
+//               value={formatNumber(safeValue(itemDetails.totalDeclaredValue || itemDetails.totalDutyValue))}
+//               disabled
+//               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+//             />
+//           </div>
+
+//           <div>
+//             <label className="block text-sm font-medium text-gray-700 mb-1">
+//               Total Declared Value PKR
+//             </label>
+//             <input
+//               type="text"
+//               value={formatNumber(totalDvPkr)}
+//               disabled
+//               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Tax rates section with columns */}
+//         <div className="mb-6">
+//           <div className="grid grid-cols-3 gap-4 mb-2 bg-[#4a6fa5] text-white p-2 rounded">
+//             <div className="text-sm font-bold">Name</div>
+//             <div className="text-sm font-bold text-center">Value AV</div>
+//             <div className="text-sm font-bold text-center">Value DV</div>
+//           </div>
+
+//           {/* Custom Duty Row with Radio */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <div
+//                 onClick={() => handleDutyTypeChange('custom')}
+//                 className={`w-5 h-5 flex-shrink-0 rounded-full border mr-2 cursor-pointer flex items-center justify-center ${itemDetails.isCustomDutySelected ? "border-[#4a6fa5] bg-[#f0f5fa]" : "border-gray-400"
+//                   }`}
+//               >
+//                 {itemDetails.isCustomDutySelected && (
+//                   <div className="w-3 h-3 bg-[#4a6fa5] rounded-full"></div>
+//                 )}
+//               </div>
+//               <label
+//                 htmlFor="customDuty"
+//                 className={`text-sm mr-2 w-32 cursor-pointer ${itemDetails.isCustomDutySelected ? "text-[#4a6fa5] font-medium" : "text-gray-700"
+//                   }`}
+//                 onClick={() => handleDutyTypeChange('custom')}
+//               >
+//                 Custom Duty
+//               </label>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.customDuty)}
+//                   onChange={(e) => onItemDetailChange('customDuty', parseFloat(e.target.value))}
+//                   className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${itemDetails.isCustomDutySelected
+//                       ? "border-[#4a6fa5] focus:ring-[#4a6fa5] focus:border-[#4a6fa5]"
+//                       : "border-gray-300 bg-gray-50 text-gray-500"
+//                     }`}
+//                   disabled={!itemDetails.isCustomDutySelected}
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_customDuty)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-right bg-gray-100"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_customDuty)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-right bg-gray-100"
+//               />
+//             </div>
+//           </div>
+
+//           {/* FTA Custom Duty Row with Radio */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <div
+//                 onClick={() => handleDutyTypeChange('fta')}
+//                 className={`w-5 h-5 flex-shrink-0 rounded-full border mr-2 cursor-pointer flex items-center justify-center ${itemDetails.isFtaCustomDutySelected ? "border-[#4a6fa5] bg-[#f0f5fa]" : "border-gray-400"
+//                   }`}
+//               >
+//                 {itemDetails.isFtaCustomDutySelected && (
+//                   <div className="w-3 h-3 bg-[#4a6fa5] rounded-full"></div>
+//                 )}
+//               </div>
+//               <label
+//                 htmlFor="ftaCustomDuty"
+//                 className={`text-sm mr-2 w-32 cursor-pointer ${itemDetails.isFtaCustomDutySelected ? "text-[#4a6fa5] font-medium" : "text-gray-700"
+//                   }`}
+//                 onClick={() => handleDutyTypeChange('fta')}
+//               >
+//                 FTA Custom Duty
+//               </label>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.ftaCustomDuty)}
+//                   onChange={(e) => onItemDetailChange('ftaCustomDuty', parseFloat(e.target.value))}
+//                   className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${itemDetails.isFtaCustomDutySelected
+//                       ? "border-[#4a6fa5] focus:ring-[#4a6fa5] focus:border-[#4a6fa5]"
+//                       : "border-gray-300 bg-gray-50 text-gray-500"
+//                     }`}
+//                   disabled={!itemDetails.isFtaCustomDutySelected}
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_ftaCustomDuty)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_ftaCustomDuty)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//           </div>
+
+//           {/* ACD Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <span className="text-sm text-gray-700 mr-2 w-32 ml-6">ACD </span>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.acd)}
+//                   onChange={(e) => onItemDetailChange('acd', parseFloat(e.target.value))}
+//                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_acd)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_acd)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//           </div>
+
+//           {/* RD Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <span className="text-sm text-gray-700 mr-2 w-32 ml-6">RD </span>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.rd)}
+//                   onChange={(e) => onItemDetailChange('rd', parseFloat(e.target.value))}
+//                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_rd)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_rd)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Sales Tax Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Sales Tax </span>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.salesTax)}
+//                   onChange={(e) => onItemDetailChange('salesTax', parseFloat(e.target.value))}
+//                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_salesTax)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_salesTax)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Additional Sales Tax Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Additional Sales Tax </span>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.additionalSalesTax)}
+//                   onChange={(e) => onItemDetailChange('additionalSalesTax', parseFloat(e.target.value))}
+//                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_additionalSalesTax)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_additionalSalesTax)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Income Tax Import Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Income Tax Import </span>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.incomeTaxImport)}
+//                   onChange={(e) => onItemDetailChange('incomeTaxImport', parseFloat(e.target.value))}
+//                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_incomeTaxImport)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_incomeTaxImport)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Total Duty and Tax Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center bg-blue-50 p-2 rounded">
+//             <div className="text-sm font-bold text-gray-700">Total Duty and Tax </div>
+//             <div className='flex items-center'>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_total)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_total)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Further Tax Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Further Tax </span>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.furtherTax)}
+//                   onChange={(e) => onItemDetailChange('furtherTax', parseFloat(e.target.value))}
+//                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_furtherTax)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Income Tax Withheld Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
+//             <div className="flex items-center">
+//               <span className="text-sm text-gray-700 w-[105px] ml-6">Income Tax Withheld </span>
+//               <div className='flex items-center'>
+//                 <input
+//                   type="number"
+//                   step="0.01"
+//                   value={safeValue(itemDetails.incomeTaxWithheld)}
+//                   onChange={(e) => onItemDetailChange('incomeTaxWithheld', parseFloat(e.target.value))}
+//                   className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+//                 />
+//                 <span className='ml-2'>%</span>
+//               </div>
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_incomeTaxWithheld)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_incomeTaxWithheld)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Grand Total Row */}
+//           <div className="grid grid-cols-3 gap-4 mb-2 items-center bg-green-50 p-2 rounded">
+//             <div className="text-sm font-bold text-gray-700">Grand Total</div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Av_GrandTotal)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold"
+//               />
+//             </div>
+//             <div>
+//               <input
+//                 type="text"
+//                 value={formatNumber(Dv_GrandTotal)}
+//                 disabled
+//                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold"
+//               />
+//             </div>
+//           </div>
+//         </div>
+
+//         {/* Remarks */}
+//         <div className="mb-4">
+//           <label className="block text-sm font-medium text-gray-700 mb-1">
+//             Remarks
+//           </label>
+//           <textarea
+//             rows={2}
+//             value={itemDetails.remarks || ''}
+//             onChange={(e) => onItemDetailChange('remarks', e.target.value)}
+//             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 focus:border-blue-900 focus:border-2"
+//           />
+//         </div>
+
+//         {/* Action Buttons */}
+//         <div className="flex justify-end space-x-3">
+//           {onCancelEdit && (
+//             <button
+//               type="button"
+//               onClick={onCancelEdit}
+//               className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500"
+//             >
+//               Cancel
+//             </button>
+//           )}
+
+//           <button
+//             type="button"
+//             onClick={onAddItem}
+//             disabled={saving}
+//             className="px-4 py-2 bg-[#4a6fa5] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+//           >
+//             {saving ? 'Processing...' : isEditing ? 'Update Item' : 'Add Item'}
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ItemDetails;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState } from 'react';
 
 const ItemDetails = ({
   landedCost,
@@ -844,45 +1615,90 @@ const ItemDetails = ({
   saving
 }) => {
 
-  // Format number with commas
+  // Track which fields are being edited
+  const [editingField, setEditingField] = useState(null);
+  const [tempValues, setTempValues] = useState({});
+
+  // Format number for display only
   const formatNumber = (value, decimals = 2) => {
-    const num = typeof value === 'number' ? value : parseFloat(value) || 0;
+    const num = parseFloat(value) || 0;
     return num.toLocaleString('en-US', {
       minimumFractionDigits: decimals,
       maximumFractionDigits: decimals
     });
   };
 
-  // Safe value function
+  // Safe value - ALWAYS returns a number, NEVER NaN
   const safeValue = (value) => {
-    if (value === null || value === undefined) return 0;
-    if (typeof value === 'number') return value;
-    if (typeof value === 'string') {
-      const parsed = parseFloat(value);
-      return isNaN(parsed) ? 0 : parsed;
+    if (value === null || value === undefined || value === '') return 0;
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? 0 : parsed;
+  };
+
+  // Handle input field focus
+  const handleFocus = (fieldName, currentValue) => {
+    setEditingField(fieldName);
+    const value = safeValue(currentValue);
+    // If value is 0, show empty field, otherwise show the number without formatting
+    setTempValues({
+      ...tempValues,
+      [fieldName]: value === 0 ? '' : value.toString()
+    });
+  };
+
+  // Handle input field blur
+  const handleBlur = (fieldName) => {
+    const value = tempValues[fieldName] || '';
+    const numValue = parseFloat(value) || 0;
+    onItemDetailChange(fieldName, numValue);
+    setEditingField(null);
+    setTempValues({
+      ...tempValues,
+      [fieldName]: undefined
+    });
+  };
+
+  // Handle input change
+  const handleChange = (fieldName, value) => {
+    // Allow empty string, numbers, decimal point, and negative sign
+    if (value === '' || value === '-' || value === '.' || value === '-.') {
+      setTempValues({
+        ...tempValues,
+        [fieldName]: value
+      });
+      return;
     }
-    return 0;
+
+    // Only allow valid number patterns
+    if (/^-?\d*\.?\d*$/.test(value)) {
+      setTempValues({
+        ...tempValues,
+        [fieldName]: value
+      });
+      
+      // Update the actual value in real-time (but keep showing the raw input)
+      const numValue = parseFloat(value);
+      if (!isNaN(numValue)) {
+        onItemDetailChange(fieldName, numValue);
+      }
+    }
   };
 
-  // Handle number input focus (remove formatting for editing)
-  const handleNumberFocus = (e) => {
-    const value = e.target.value.replace(/,/g, '');
-    e.target.value = value;
+  // Get display value for input field
+  const getDisplayValue = (fieldName, currentValue) => {
+    if (editingField === fieldName) {
+      // Show the temporary value while editing
+      return tempValues[fieldName] !== undefined ? tempValues[fieldName] : '';
+    }
+    // Show formatted value when not editing
+    return formatNumber(safeValue(currentValue));
   };
 
-  // Handle number input blur (add formatting after editing)
-  const handleNumberBlur = (e, fieldName) => {
-    const value = parseFloat(e.target.value.replace(/,/g, '')) || 0;
-    onItemDetailChange(fieldName, value);
-  };
+  // Calculate base values - ALWAYS use safeValue to prevent NaN
+  const totalAvPkr = safeValue(exchangeRate) * safeValue(itemDetails.totalAssessableValue) * (safeValue(landedCost) || 1.01);
+  const totalDvPkr = safeValue(exchangeRate) * safeValue(itemDetails.totalDeclaredValue) * (safeValue(landedCost) || 1.01);
 
-  const [sales_tax, setSales_tex] = useState(null);
-
-  // Calculate base values
-  const totalAvPkr = exchangeRate * safeValue(itemDetails.totalAssessableValue) * (landedCost || 1.01);
-  const totalDvPkr = exchangeRate * safeValue(itemDetails.totalDeclaredValue) * (landedCost || 1.01);
-
-  // Determine which duty to use based on selection
+  // Determine which duty to use
   const selectedAvDuty = itemDetails.isCustomDutySelected ?
     (totalAvPkr * safeValue(itemDetails.customDuty)) / 100 :
     (totalAvPkr * safeValue(itemDetails.ftaCustomDuty)) / 100;
@@ -891,18 +1707,15 @@ const ItemDetails = ({
     (totalDvPkr * safeValue(itemDetails.customDuty)) / 100 :
     (totalDvPkr * safeValue(itemDetails.ftaCustomDuty)) / 100;
 
-  // Calculate individual components with the selected duty
+  // Calculate all tax components - using safeValue everywhere
   const Av_customDuty = itemDetails.isCustomDutySelected ? (totalAvPkr * safeValue(itemDetails.customDuty)) / 100 : 0;
   const Av_ftaCustomDuty = itemDetails.isFtaCustomDutySelected ? (totalAvPkr * safeValue(itemDetails.ftaCustomDuty)) / 100 : 0;
   const Av_acd = (totalAvPkr * safeValue(itemDetails.acd)) / 100;
   const Av_rd = (totalAvPkr * safeValue(itemDetails.rd)) / 100;
-
-  // Use the selected duty in subsequent calculations
   const Av_salesTax = ((totalAvPkr + selectedAvDuty + Av_acd + Av_rd) * safeValue(itemDetails.salesTax)) / 100;
   const Av_additionalSalesTax = ((totalAvPkr + selectedAvDuty + Av_acd + Av_rd) * safeValue(itemDetails.additionalSalesTax)) / 100;
   const Av_incomeTaxImport = ((totalAvPkr + selectedAvDuty + Av_acd + Av_rd + Av_salesTax + Av_additionalSalesTax) * safeValue(itemDetails.incomeTaxImport)) / 100;
 
-  // Calculate DV components
   const Dv_customDuty = itemDetails.isCustomDutySelected ? (totalDvPkr * safeValue(itemDetails.customDuty)) / 100 : 0;
   const Dv_ftaCustomDuty = itemDetails.isFtaCustomDutySelected ? (totalDvPkr * safeValue(itemDetails.ftaCustomDuty)) / 100 : 0;
   const Dv_acd = (totalDvPkr * safeValue(itemDetails.acd)) / 100;
@@ -911,48 +1724,29 @@ const ItemDetails = ({
   const Dv_additionalSalesTax = ((totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd) * safeValue(itemDetails.additionalSalesTax)) / 100;
   const Dv_incomeTaxImport = ((totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd + Dv_salesTax + Dv_additionalSalesTax) * safeValue(itemDetails.incomeTaxImport)) / 100;
 
-  // Add new calculations for Further Tax as requested
+  // Further Tax calculations
   const astSalesTaxRatio = safeValue(itemDetails.salesTax) > 0 ?
     (1 + (safeValue(itemDetails.additionalSalesTax) / safeValue(itemDetails.salesTax))) : 1;
 
-  const Av_furtherTax = astSalesTaxRatio *
-    (totalAvPkr + selectedAvDuty + Av_acd + Av_rd) *
-    (safeValue(itemDetails.furtherTax) / 100);
+  const Av_furtherTax = astSalesTaxRatio * (totalAvPkr + selectedAvDuty + Av_acd + Av_rd) * (safeValue(itemDetails.furtherTax) / 100);
+  const Dv_furtherTax = astSalesTaxRatio * (totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd) * (safeValue(itemDetails.furtherTax) / 100);
 
-  const Dv_furtherTax = astSalesTaxRatio *
-    (totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd) *
-    (safeValue(itemDetails.furtherTax) / 100);
+  const Av_incomeTaxWithheld = astSalesTaxRatio * (totalAvPkr + selectedAvDuty + Av_acd + Av_rd + Av_salesTax + Av_additionalSalesTax) * (safeValue(itemDetails.incomeTaxWithheld) / 100);
+  const Dv_incomeTaxWithheld = astSalesTaxRatio * (totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd + Dv_salesTax + Dv_additionalSalesTax) * (safeValue(itemDetails.incomeTaxWithheld) / 100);
 
-  // Add new calculations for Income Tax Withheld as requested
-  const Av_incomeTaxWithheld = astSalesTaxRatio *
-    (totalAvPkr + selectedAvDuty + Av_acd + Av_rd + Av_salesTax + Av_additionalSalesTax) *
-    (safeValue(itemDetails.incomeTaxWithheld) / 100);
+  // Totals
+  const Av_total = Av_acd + Av_additionalSalesTax + (itemDetails.isCustomDutySelected ? Av_customDuty : Av_ftaCustomDuty) + Av_rd + Av_salesTax + Av_incomeTaxImport;
+  const Dv_total = Dv_acd + Dv_additionalSalesTax + (itemDetails.isCustomDutySelected ? Dv_customDuty : Dv_ftaCustomDuty) + Dv_rd + Dv_salesTax + Dv_incomeTaxImport;
 
-  const Dv_incomeTaxWithheld = astSalesTaxRatio *
-    (totalDvPkr + selectedDvDuty + Dv_acd + Dv_rd + Dv_salesTax + Dv_additionalSalesTax) *
-    (safeValue(itemDetails.incomeTaxWithheld) / 100);
-
-  // Total Duty and Tax
-  const Av_total = Av_acd + Av_additionalSalesTax +
-    (itemDetails.isCustomDutySelected ? Av_customDuty : Av_ftaCustomDuty) +
-    Av_rd + Av_salesTax + Av_incomeTaxImport;
-
-  const Dv_total = Dv_acd + Dv_additionalSalesTax +
-    (itemDetails.isCustomDutySelected ? Dv_customDuty : Dv_ftaCustomDuty) +
-    Dv_rd + Dv_salesTax + Dv_incomeTaxImport;
-
-  // Update Grand Totals to include all taxes
   const Av_GrandTotal = Av_total + Av_furtherTax + Av_incomeTaxWithheld;
   const Dv_GrandTotal = Dv_total + Dv_furtherTax + Dv_incomeTaxWithheld;
 
   // Handle duty type selection
   const handleDutyTypeChange = (type) => {
     if (type === 'custom') {
-      console.log('User selected Custom Duty with value:', itemDetails.customDuty + '%');
       onItemDetailChange('isCustomDutySelected', true);
       onItemDetailChange('isFtaCustomDutySelected', false);
     } else {
-      console.log('User selected FTA Custom Duty with value:', itemDetails.ftaCustomDuty + '%');
       onItemDetailChange('isCustomDutySelected', false);
       onItemDetailChange('isFtaCustomDutySelected', true);
     }
@@ -965,12 +1759,10 @@ const ItemDetails = ({
       </h3>
 
       <div className="space-y-4">
-        {/* HS Code and UOM in one row */}
+        {/* HS Code and UOM */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              HS Code
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">HS Code</label>
             <input
               type="text"
               value={itemDetails.hsCode || ''}
@@ -978,11 +1770,8 @@ const ItemDetails = ({
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
             />
           </div>
-
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Unit of Measurement
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Unit of Measurement</label>
             <input
               type="text"
               value={itemDetails.Unit?.unit || itemDetails.uomCode || ''}
@@ -992,50 +1781,40 @@ const ItemDetails = ({
           </div>
         </div>
 
-        {/* Assessable values in one row */}
+        {/* Assessable values */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Assessable Quantity
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Assessable Quantity</label>
             <input
               type="text"
-              value={formatNumber(safeValue(itemDetails.assessableQuantity))}
-              onFocus={handleNumberFocus}
-              onBlur={(e) => handleNumberBlur(e, 'assessableQuantity')}
-              onChange={(e) => {
-                const value = e.target.value.replace(/,/g, '');
-                if (!isNaN(value) || value === '' || value === '-') {
-                  onItemDetailChange('assessableQuantity', parseFloat(value) || 0);
-                }
+              value={getDisplayValue('assessableQuantity', itemDetails.assessableQuantity)}
+              onFocus={(e) => {
+                handleFocus('assessableQuantity', itemDetails.assessableQuantity);
+                setTimeout(() => e.target.select(), 0);
               }}
+              onBlur={() => handleBlur('assessableQuantity')}
+              onChange={(e) => handleChange('assessableQuantity', e.target.value)}
               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Assessable Value
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Assessable Value</label>
             <input
               type="text"
-              value={formatNumber(safeValue(itemDetails.assessableValue))}
-              onFocus={handleNumberFocus}
-              onBlur={(e) => handleNumberBlur(e, 'assessableValue')}
-              onChange={(e) => {
-                const value = e.target.value.replace(/,/g, '');
-                if (!isNaN(value) || value === '' || value === '-') {
-                  onItemDetailChange('assessableValue', parseFloat(value) || 0);
-                }
+              value={getDisplayValue('assessableValue', itemDetails.assessableValue)}
+              onFocus={(e) => {
+                handleFocus('assessableValue', itemDetails.assessableValue);
+                setTimeout(() => e.target.select(), 0);
               }}
+              onBlur={() => handleBlur('assessableValue')}
+              onChange={(e) => handleChange('assessableValue', e.target.value)}
               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Total Assessable Value
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Total Assessable Value</label>
             <input
               type="text"
               value={formatNumber(safeValue(itemDetails.totalAssessableValue))}
@@ -1045,9 +1824,7 @@ const ItemDetails = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Total Assessable Value PKR
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Total Assessable Value PKR</label>
             <input
               type="text"
               value={formatNumber(totalAvPkr)}
@@ -1057,62 +1834,50 @@ const ItemDetails = ({
           </div>
         </div>
 
-        {/* Declared values in one row */}
+        {/* Declared values */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Declared Quantity
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Declared Quantity</label>
             <input
               type="text"
-              value={formatNumber(safeValue(itemDetails.declaredQuantity))}
-              onFocus={handleNumberFocus}
-              onBlur={(e) => handleNumberBlur(e, 'declaredQuantity')}
-              onChange={(e) => {
-                const value = e.target.value.replace(/,/g, '');
-                if (!isNaN(value) || value === '' || value === '-') {
-                  onItemDetailChange('declaredQuantity', parseFloat(value) || 0);
-                }
+              value={getDisplayValue('declaredQuantity', itemDetails.declaredQuantity)}
+              onFocus={(e) => {
+                handleFocus('declaredQuantity', itemDetails.declaredQuantity);
+                setTimeout(() => e.target.select(), 0);
               }}
+              onBlur={() => handleBlur('declaredQuantity')}
+              onChange={(e) => handleChange('declaredQuantity', e.target.value)}
               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Declared Value
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Declared Value</label>
             <input
               type="text"
-              value={formatNumber(safeValue(itemDetails.declaredValue))}
-              onFocus={handleNumberFocus}
-              onBlur={(e) => handleNumberBlur(e, 'declaredValue')}
-              onChange={(e) => {
-                const value = e.target.value.replace(/,/g, '');
-                if (!isNaN(value) || value === '' || value === '-') {
-                  onItemDetailChange('declaredValue', parseFloat(value) || 0);
-                }
+              value={getDisplayValue('declaredValue', itemDetails.declaredValue)}
+              onFocus={(e) => {
+                handleFocus('declaredValue', itemDetails.declaredValue);
+                setTimeout(() => e.target.select(), 0);
               }}
+              onBlur={() => handleBlur('declaredValue')}
+              onChange={(e) => handleChange('declaredValue', e.target.value)}
               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Total Declared Value
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Total Declared Value</label>
             <input
               type="text"
-              value={formatNumber(safeValue(itemDetails.totalDeclaredValue || itemDetails.totalDutyValue))}
+              value={formatNumber(safeValue(itemDetails.totalDeclaredValue))}
               disabled
               className="w-full px-3 text-right py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Total Declared Value PKR
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Total Declared Value PKR</label>
             <input
               type="text"
               value={formatNumber(totalDvPkr)}
@@ -1122,7 +1887,7 @@ const ItemDetails = ({
           </div>
         </div>
 
-        {/* Tax rates section with columns */}
+        {/* Tax rates section */}
         <div className="mb-6">
           <div className="grid grid-cols-3 gap-4 mb-2 bg-[#4a6fa5] text-white p-2 rounded">
             <div className="text-sm font-bold">Name</div>
@@ -1130,24 +1895,22 @@ const ItemDetails = ({
             <div className="text-sm font-bold text-center">Value DV</div>
           </div>
 
-          {/* Custom Duty Row with Radio */}
+          {/* Custom Duty Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
               <div
                 onClick={() => handleDutyTypeChange('custom')}
-                className={`w-5 h-5 flex-shrink-0 rounded-full border mr-2 cursor-pointer flex items-center justify-center ${itemDetails.isCustomDutySelected ? "border-[#4a6fa5] bg-[#f0f5fa]" : "border-gray-400"
-                  }`}
+                className={`w-5 h-5 flex-shrink-0 rounded-full border mr-2 cursor-pointer flex items-center justify-center ${
+                  itemDetails.isCustomDutySelected ? "border-[#4a6fa5] bg-[#f0f5fa]" : "border-gray-400"
+                }`}
               >
                 {itemDetails.isCustomDutySelected && (
                   <div className="w-3 h-3 bg-[#4a6fa5] rounded-full"></div>
                 )}
               </div>
-              <label
-                htmlFor="customDuty"
-                className={`text-sm mr-2 w-32 cursor-pointer ${itemDetails.isCustomDutySelected ? "text-[#4a6fa5] font-medium" : "text-gray-700"
-                  }`}
-                onClick={() => handleDutyTypeChange('custom')}
-              >
+              <label className={`text-sm mr-2 w-32 cursor-pointer ${
+                itemDetails.isCustomDutySelected ? "text-[#4a6fa5] font-medium" : "text-gray-700"
+              }`}>
                 Custom Duty
               </label>
               <div className='flex items-center'>
@@ -1155,52 +1918,41 @@ const ItemDetails = ({
                   type="number"
                   step="0.01"
                   value={safeValue(itemDetails.customDuty)}
-                  onChange={(e) => onItemDetailChange('customDuty', parseFloat(e.target.value))}
-                  className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${itemDetails.isCustomDutySelected
+                  onChange={(e) => onItemDetailChange('customDuty', parseFloat(e.target.value) || 0)}
+                  disabled={!itemDetails.isCustomDutySelected}
+                  className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${
+                    itemDetails.isCustomDutySelected
                       ? "border-[#4a6fa5] focus:ring-[#4a6fa5] focus:border-[#4a6fa5]"
                       : "border-gray-300 bg-gray-50 text-gray-500"
-                    }`}
-                  disabled={!itemDetails.isCustomDutySelected}
+                  }`}
                 />
                 <span className='ml-2'>%</span>
               </div>
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Av_customDuty)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-right bg-gray-100"
-              />
+              <input type="text" value={formatNumber(Av_customDuty)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-right bg-gray-100" />
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_customDuty)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-right bg-gray-100"
-              />
+              <input type="text" value={formatNumber(Dv_customDuty)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm text-right bg-gray-100" />
             </div>
           </div>
 
-          {/* FTA Custom Duty Row with Radio */}
+          {/* FTA Custom Duty Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
               <div
                 onClick={() => handleDutyTypeChange('fta')}
-                className={`w-5 h-5 flex-shrink-0 rounded-full border mr-2 cursor-pointer flex items-center justify-center ${itemDetails.isFtaCustomDutySelected ? "border-[#4a6fa5] bg-[#f0f5fa]" : "border-gray-400"
-                  }`}
+                className={`w-5 h-5 flex-shrink-0 rounded-full border mr-2 cursor-pointer flex items-center justify-center ${
+                  itemDetails.isFtaCustomDutySelected ? "border-[#4a6fa5] bg-[#f0f5fa]" : "border-gray-400"
+                }`}
               >
                 {itemDetails.isFtaCustomDutySelected && (
                   <div className="w-3 h-3 bg-[#4a6fa5] rounded-full"></div>
                 )}
               </div>
-              <label
-                htmlFor="ftaCustomDuty"
-                className={`text-sm mr-2 w-32 cursor-pointer ${itemDetails.isFtaCustomDutySelected ? "text-[#4a6fa5] font-medium" : "text-gray-700"
-                  }`}
-                onClick={() => handleDutyTypeChange('fta')}
-              >
+              <label className={`text-sm mr-2 w-32 cursor-pointer ${
+                itemDetails.isFtaCustomDutySelected ? "text-[#4a6fa5] font-medium" : "text-gray-700"
+              }`}>
                 FTA Custom Duty
               </label>
               <div className='flex items-center'>
@@ -1208,275 +1960,110 @@ const ItemDetails = ({
                   type="number"
                   step="0.01"
                   value={safeValue(itemDetails.ftaCustomDuty)}
-                  onChange={(e) => onItemDetailChange('ftaCustomDuty', parseFloat(e.target.value))}
-                  className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${itemDetails.isFtaCustomDutySelected
+                  onChange={(e) => onItemDetailChange('ftaCustomDuty', parseFloat(e.target.value) || 0)}
+                  disabled={!itemDetails.isFtaCustomDutySelected}
+                  className={`flex-1 px-2 py-1 border rounded-md shadow-sm focus:outline-none text-right ${
+                    itemDetails.isFtaCustomDutySelected
                       ? "border-[#4a6fa5] focus:ring-[#4a6fa5] focus:border-[#4a6fa5]"
                       : "border-gray-300 bg-gray-50 text-gray-500"
-                    }`}
-                  disabled={!itemDetails.isFtaCustomDutySelected}
+                  }`}
                 />
                 <span className='ml-2'>%</span>
               </div>
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Av_ftaCustomDuty)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
+              <input type="text" value={formatNumber(Av_ftaCustomDuty)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right" />
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_ftaCustomDuty)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
+              <input type="text" value={formatNumber(Dv_ftaCustomDuty)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right" />
             </div>
           </div>
 
-          {/* ACD Row */}
-          <div className="grid grid-cols-3 gap-4 mb-2 items-center">
-            <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">ACD </span>
-              <div className='flex items-center'>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={safeValue(itemDetails.acd)}
-                  onChange={(e) => onItemDetailChange('acd', parseFloat(e.target.value))}
-                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
-                />
-                <span className='ml-2'>%</span>
+          {/* Other tax rows */}
+          {[
+            { name: 'ACD', field: 'acd', avValue: Av_acd, dvValue: Dv_acd },
+            { name: 'RD', field: 'rd', avValue: Av_rd, dvValue: Dv_rd },
+            { name: 'Sales Tax', field: 'salesTax', avValue: Av_salesTax, dvValue: Dv_salesTax },
+            { name: 'Additional Sales Tax', field: 'additionalSalesTax', avValue: Av_additionalSalesTax, dvValue: Dv_additionalSalesTax },
+            { name: 'Income Tax Import', field: 'incomeTaxImport', avValue: Av_incomeTaxImport, dvValue: Dv_incomeTaxImport }
+          ].map((tax) => (
+            <div key={tax.field} className="grid grid-cols-3 gap-4 mb-2 items-center">
+              <div className="flex items-center">
+                <span className="text-sm text-gray-700 mr-2 w-32 ml-6">{tax.name}</span>
+                <div className='flex items-center'>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={safeValue(itemDetails[tax.field])}
+                    onChange={(e) => onItemDetailChange(tax.field, parseFloat(e.target.value) || 0)}
+                    className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 text-right focus:border-blue-500"
+                  />
+                  <span className='ml-2'>%</span>
+                </div>
+              </div>
+              <div>
+                <input type="text" value={formatNumber(tax.avValue)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right" />
+              </div>
+              <div>
+                <input type="text" value={formatNumber(tax.dvValue)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right" />
               </div>
             </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Av_acd)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_acd)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-          </div>
-
-          {/* RD Row */}
-          <div className="grid grid-cols-3 gap-4 mb-2 items-center">
-            <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">RD </span>
-              <div className='flex items-center'>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={safeValue(itemDetails.rd)}
-                  onChange={(e) => onItemDetailChange('rd', parseFloat(e.target.value))}
-                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
-                />
-                <span className='ml-2'>%</span>
-              </div>
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Av_rd)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_rd)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-          </div>
-
-          {/* Sales Tax Row */}
-          <div className="grid grid-cols-3 gap-4 mb-2 items-center">
-            <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Sales Tax </span>
-              <div className='flex items-center'>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={safeValue(itemDetails.salesTax)}
-                  onChange={(e) => onItemDetailChange('salesTax', parseFloat(e.target.value))}
-                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
-                />
-                <span className='ml-2'>%</span>
-              </div>
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Av_salesTax)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_salesTax)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-          </div>
-
-          {/* Additional Sales Tax Row */}
-          <div className="grid grid-cols-3 gap-4 mb-2 items-center">
-            <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Additional Sales Tax </span>
-              <div className='flex items-center'>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={safeValue(itemDetails.additionalSalesTax)}
-                  onChange={(e) => onItemDetailChange('additionalSalesTax', parseFloat(e.target.value))}
-                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
-                />
-                <span className='ml-2'>%</span>
-              </div>
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Av_additionalSalesTax)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_additionalSalesTax)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-          </div>
-
-          {/* Income Tax Import Row */}
-          <div className="grid grid-cols-3 gap-4 mb-2 items-center">
-            <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Income Tax Import </span>
-              <div className='flex items-center'>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={safeValue(itemDetails.incomeTaxImport)}
-                  onChange={(e) => onItemDetailChange('incomeTaxImport', parseFloat(e.target.value))}
-                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
-                />
-                <span className='ml-2'>%</span>
-              </div>
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Av_incomeTaxImport)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_incomeTaxImport)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
-            </div>
-          </div>
+          ))}
 
           {/* Total Duty and Tax Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center bg-blue-50 p-2 rounded">
-            <div className="text-sm font-bold text-gray-700">Total Duty and Tax </div>
-            <div className='flex items-center'>
-              <input
-                type="text"
-                value={formatNumber(Av_total)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold"
-              />
+            <div className="text-sm font-bold text-gray-700">Total Duty and Tax</div>
+            <div>
+              <input type="text" value={formatNumber(Av_total)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold" />
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_total)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold"
-              />
+              <input type="text" value={formatNumber(Dv_total)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold" />
             </div>
           </div>
 
           {/* Further Tax Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Further Tax </span>
+              <span className="text-sm text-gray-700 mr-2 w-32 ml-6">Further Tax</span>
               <div className='flex items-center'>
                 <input
                   type="number"
                   step="0.01"
                   value={safeValue(itemDetails.furtherTax)}
-                  onChange={(e) => onItemDetailChange('furtherTax', parseFloat(e.target.value))}
-                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+                  onChange={(e) => onItemDetailChange('furtherTax', parseFloat(e.target.value) || 0)}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 text-right focus:border-blue-500"
                 />
                 <span className='ml-2'>%</span>
               </div>
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_furtherTax)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
+              <input type="text" value={formatNumber(Av_furtherTax)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right" />
+            </div>
+            <div>
+              <input type="text" value={formatNumber(Dv_furtherTax)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right" />
             </div>
           </div>
 
           {/* Income Tax Withheld Row */}
           <div className="grid grid-cols-3 gap-4 mb-2 items-center">
             <div className="flex items-center">
-              <span className="text-sm text-gray-700 w-[105px] ml-6">Income Tax Withheld </span>
+              <span className="text-sm text-gray-700 w-[105px] ml-6">Income Tax Withheld</span>
               <div className='flex items-center'>
                 <input
                   type="number"
                   step="0.01"
                   value={safeValue(itemDetails.incomeTaxWithheld)}
-                  onChange={(e) => onItemDetailChange('incomeTaxWithheld', parseFloat(e.target.value))}
-                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 text-right focus:border-blue-500"
+                  onChange={(e) => onItemDetailChange('incomeTaxWithheld', parseFloat(e.target.value) || 0)}
+                  className="flex-1 px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 text-right focus:border-blue-500"
                 />
                 <span className='ml-2'>%</span>
               </div>
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Av_incomeTaxWithheld)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
+              <input type="text" value={formatNumber(Av_incomeTaxWithheld)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right" />
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_incomeTaxWithheld)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right"
-              />
+              <input type="text" value={formatNumber(Dv_incomeTaxWithheld)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right" />
             </div>
           </div>
 
@@ -1484,34 +2071,22 @@ const ItemDetails = ({
           <div className="grid grid-cols-3 gap-4 mb-2 items-center bg-green-50 p-2 rounded">
             <div className="text-sm font-bold text-gray-700">Grand Total</div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Av_GrandTotal)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold"
-              />
+              <input type="text" value={formatNumber(Av_GrandTotal)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold" />
             </div>
             <div>
-              <input
-                type="text"
-                value={formatNumber(Dv_GrandTotal)}
-                disabled
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold"
-              />
+              <input type="text" value={formatNumber(Dv_GrandTotal)} disabled className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-100 text-right font-bold" />
             </div>
           </div>
         </div>
 
         {/* Remarks */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Remarks
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Remarks</label>
           <textarea
             rows={2}
             value={itemDetails.remarks || ''}
             onChange={(e) => onItemDetailChange('remarks', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-900 focus:border-blue-900 focus:border-2"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
@@ -1526,12 +2101,11 @@ const ItemDetails = ({
               Cancel
             </button>
           )}
-
           <button
             type="button"
             onClick={onAddItem}
             disabled={saving}
-            className="px-4 py-2 bg-[#4a6fa5] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+            className="px-4 py-2 bg-[#4a6fa5] text-white rounded-md hover:bg-[#3a5f95] focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
           >
             {saving ? 'Processing...' : isEditing ? 'Update Item' : 'Add Item'}
           </button>
@@ -1542,4 +2116,3 @@ const ItemDetails = ({
 };
 
 export default ItemDetails;
-
